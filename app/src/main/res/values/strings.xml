@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">KatsunaCamera</string>
+    <string name="app_not_found">There is no application to handle your request.</string>
+
+    <string name="intro_message">
+        <![CDATA[
+
+
+            This sample demonstrates how to record video using Camera2 API.
+
+
+        ]]>
+    </string>
+    <string name="stop">Stop</string>
+    <string name="description_info">Info</string>
+    <string name="picture">Picture</string>
+    <string name="request_permission">This sample needs camera permissions.</string>
+    <string name="permission_request">This sample needs permission for camera and audio recording.</string>
+
+
+    <string name="time">Time</string>
+
+    <!-- action buttons -->
+    <string name="take_photo">Take photo</string>
+    <string name="record_video">Record video</string>
+    <string name="switch_to_video">Switch to video</string>
+    <string name="switch_to_photo">Switch to photo</string>
+    <string name="gallery">Gallery</string>
+    <string name="front_camera">Front camera</string>
+    <string name="flash">Flash</string>
+    <string name="flash_off">Flash Off</string>
+    <string name="flash_auto">Flash auto</string>
+    <string name="close">Close</string>
+
+    <!-- settings -->
+    <string name="small_size_photo">Small Size Photo</string>
+    <string name="black_and_white">Black and White</string>
+
+    <!-- error messages -->
+    <string name="camera_api_not_supported">This device doesn\'t support Camera2 API.</string>
+    <string name="camera_open_failed">Failed to open camera.</string>
+    <string name="preview_creation_failed">Failed to create camera preview.</string>
+    <string name="preview_update_failed">Failed to update camera preview.</string>
+    <string name="preview_configuration_failed">Preview configuration failed.</string>
+    <string name="configuration_failed">Configuration failed.</string>
+    <string name="lock_focus_failed">Failed to lock focus.</string>
+    <string name="capture_picture_failed">Couldn\'t capture photo.</string>
+    <string name="capture_video_failed">Couldn\'t record video.</string>
+    <string name="file_access_failed">Couldn\'t store photo.</string>
+    <string name="unlock_focus_failed">Failed to unlock focus.</string>
+    <string name="not_available_space_for_video">Not available space to store video.</string>
+    <string name="not_available_space_for_picture">Not available space to store picture.</string>
+    <string name="recording_stopped_due_storage">Recording stopped due to insufficient space.</string>
+
+    <!-- success messages -->
+    <string name="picture_taken">Picture taken</string>
+    <string name="video_recorded">Video recorded</string>
+</resources>

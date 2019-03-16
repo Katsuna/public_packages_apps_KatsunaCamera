@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="buttons_container_height">90dp</dimen>
+    <dimen name="buttons_container_width">90dp</dimen>
+    <dimen name="buttons_padding">10dp</dimen>
+
+    <dimen name="action_button_width">110dp</dimen>
+    <dimen name="action_button_width_land">90dp</dimen>
+
+    <dimen name="control_icons_size">45dp</dimen>
+    <dimen name="control_icons_size_small">30dp</dimen>
+
+</resources>

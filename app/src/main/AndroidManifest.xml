@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.katsuna.camera">
+
+    <compatible-screens>
+
+        <!-- all normal size screens -->
+        <screen
+            android:screenDensity="mdpi"
+            android:screenSize="normal" /> <!-- 160 -->
+        <screen
+            android:screenDensity="hdpi"
+            android:screenSize="normal" /> <!-- 240 -->
+        <screen
+            android:screenDensity="280"
+            android:screenSize="normal" /> <!-- Workaround -->
+        <screen
+            android:screenDensity="xhdpi"
+            android:screenSize="normal" /> <!-- 320 -->
+        <screen
+            android:screenDensity="360"
+            android:screenSize="normal" /> <!-- Workaround -->
+        <screen
+            android:screenDensity="420"
+            android:screenSize="normal" /> <!-- Workaround Google Pixel, Nexus 5x -->
+        <screen
+            android:screenDensity="xxhdpi"
+            android:screenSize="normal" /> <!-- 480 -->
+        <screen
+            android:screenDensity="560"
+            android:screenSize="normal" /> <!-- Workaround Google Pixel XL, Nexus 6, Nexus 6P -->
+        <screen
+            android:screenDensity="xxxhdpi"
+            android:screenSize="normal" /> <!-- 640 -->
+    </compatible-screens>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera.flash" />
+
+    <application
+        android:name=".CameraApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_camera_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/MaterialTheme">
+        <activity android:name=".CameraActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".InfoActivity"
+            android:label="@string/common_app_info"
+            android:parentActivityName=".CameraActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/common_settings"
+            android:parentActivityName=".CameraActivity"
+            android:screenOrientation="portrait" />
+
+    </application>
+
+</manifest>

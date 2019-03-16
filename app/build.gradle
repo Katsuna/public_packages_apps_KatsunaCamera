@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    defaultConfig {
+        applicationId "com.katsuna.camera"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':commons')
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+    implementation "com.android.support:support-v4:$supportLibraryVersion"
+    implementation "com.android.support:design:$supportLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+    testImplementation "junit:junit:$jUnitVersion"
+
+    // Android Testing Support Library's runner and rules
+    androidTestImplementation "com.android.support.test:runner:$runnerVersion"
+    androidTestImplementation "com.android.support.test:rules:$rulesVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
+
+    // UiAutomator Testing
+    androidTestImplementation "com.android.support.test.uiautomator:uiautomator-v18:$uiautomatorVersion"
+}

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settings_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_black38"
+    android:visibility="gone">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/settings_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/settings_bg"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="12dp">
+
+        <TextView
+            android:id="@+id/settings_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/common_settings"
+            android:textColor="@color/common_white"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/flash_label"
+            style="@style/CameraSettingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_flash_auto_small"
+            android:drawablePadding="10dp"
+            android:text="@string/flash_auto"
+            app:layout_constraintEnd_toStartOf="@id/toggle_flash"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settings_label" />
+
+        <ToggleButton
+            android:id="@+id/toggle_flash"
+            style="@style/KatsunaToggle"
+            app:layout_constraintBaseline_toBaselineOf="@id/flash_label"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <include
+            android:id="@+id/divider_1"
+            layout="@layout/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flash_label" />
+
+        <TextView
+            android:id="@+id/photo_size_label"
+            style="@style/CameraSettingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/ic_crop_free"
+            android:drawablePadding="10dp"
+            android:text="@string/small_size_photo"
+            app:layout_constraintEnd_toStartOf="@id/toggle_photo_size"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_1" />
+
+        <ToggleButton
+            android:id="@+id/toggle_photo_size"
+            style="@style/KatsunaToggle"
+            app:layout_constraintBaseline_toBaselineOf="@id/photo_size_label"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <include
+            android:id="@+id/divider_2"
+            layout="@layout/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/photo_size_label" />
+
+        <TextView
+            android:id="@+id/black_and_white_label"
+            style="@style/CameraSettingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/ic_bw"
+            android:drawablePadding="10dp"
+            android:text="@string/black_and_white"
+            app:layout_constraintEnd_toStartOf="@id/toggle_black_and_white"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_2" />
+
+        <ToggleButton
+            android:id="@+id/toggle_black_and_white"
+            style="@style/KatsunaToggle"
+            app:layout_constraintBaseline_toBaselineOf="@id/black_and_white_label"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <include
+            android:id="@+id/divider_3"
+            layout="@layout/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/black_and_white_label" />
+
+        <Button
+            android:id="@+id/close_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/close_button_bg"
+            android:fontFamily="sans-serif-medium"
+            android:paddingStart="35dp"
+            android:paddingEnd="35dp"
+            android:text="@string/close"
+            android:textAllCaps="false"
+            android:textColor="@color/common_white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_3" />
+
+        <ImageView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_info_outline_white54"
+            app:layout_constraintBottom_toBottomOf="@id/close_settings"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/close_settings" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</FrameLayout>

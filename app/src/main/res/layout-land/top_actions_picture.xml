@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/top_actions_picture_container"
+    android:layout_width="@dimen/buttons_container_height"
+    android:layout_height="match_parent"
+    android:background="@color/dark_grey">
+
+    <TextView
+        android:id="@+id/settings_button"
+        style="@style/CameraActionButton.Landscape"
+        android:drawableTop="@drawable/ic_tune"
+        android:text="@string/common_settings"
+        app:layout_constraintBottom_toTopOf="@id/flash_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/flash_button"
+        style="@style/CameraActionButton.Landscape"
+        android:drawableTop="@drawable/ic_flash_off"
+        android:text="@string/flash"
+        app:layout_constraintBottom_toTopOf="@id/switch_facing_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settings_button" />
+
+
+    <TextView
+        android:id="@+id/switch_facing_button"
+        style="@style/CameraActionButton.Landscape"
+        android:drawableTop="@drawable/ic_monochrome_photos"
+        android:text="@string/front_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flash_button" />
+
+
+</android.support.constraint.ConstraintLayout>
