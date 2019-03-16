@@ -319,6 +319,9 @@ public class VideoFragment extends Fragment implements
         mButtonVideo = view.findViewById(R.id.take);
         mButtonVideo.setText(R.string.record_video);
         mButtonVideo.setOnClickListener(v -> recordButtonOnClick());
+
+        mMediaActionSound = new MediaActionSound();
+        mMediaActionSound.load(START_VIDEO_RECORDING);
     }
 
     private void switchFlash() {
@@ -710,7 +713,7 @@ public class VideoFragment extends Fragment implements
                         startChronometer();
                         mMediaRecorder.start();
 
-                        mMediaHandler.post(playShutterSoundRunnable);
+                        playShutterSound();
                         // check storage every 5secs if there is available space left
                         storageHandler.postDelayed(checkStorageRunnable, 5000);
                     });
@@ -825,11 +828,9 @@ public class VideoFragment extends Fragment implements
         }
     };
 
-    private final Handler mMediaHandler = new Handler();
+    private MediaActionSound mMediaActionSound;
 
-    private final Runnable playShutterSoundRunnable = () -> {
-        MediaActionSound mediaActionSound = new MediaActionSound();
-        mediaActionSound.play(START_VIDEO_RECORDING);
-    };
-
+    private void playShutterSound() {
+        mMediaActionSound.play(START_VIDEO_RECORDING);
+    }
 }

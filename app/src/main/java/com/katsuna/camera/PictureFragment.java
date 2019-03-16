@@ -784,7 +784,7 @@ public class PictureFragment extends Fragment implements OnBackPressed,
                                                        @NonNull CaptureRequest request,
                                                        @NonNull TotalCaptureResult result) {
                             try {
-                                mMediaHandler.post(playShutterSoundRunnable);
+                                playShutterSound();
                                 File fileToSave = getFile();
                                 if (fileToSave != null) {
                                     Toast.makeText(getContext(), R.string.picture_taken,
@@ -905,6 +905,9 @@ public class PictureFragment extends Fragment implements OnBackPressed,
 
         mSwitchModeButton = view.findViewById(R.id.switch_mode);
         mSwitchModeButton.setOnClickListener(v -> mCameraHost.switchMode(CameraMode.PICTURE));
+
+        mMediaActionSound = new MediaActionSound();
+        mMediaActionSound.load(SHUTTER_CLICK);
     }
 
     private CameraActivity getCameraActivity() {
@@ -1025,11 +1028,10 @@ public class PictureFragment extends Fragment implements OnBackPressed,
         ErrorDialog.newInstance(message).show(getChildFragmentManager(), FRAGMENT_DIALOG);
     }
 
-    private final Handler mMediaHandler = new Handler();
+    private MediaActionSound mMediaActionSound;
 
-    private final Runnable playShutterSoundRunnable = () -> {
-        MediaActionSound mediaActionSound = new MediaActionSound();
-        mediaActionSound.play(SHUTTER_CLICK);
-    };
+    private void playShutterSound() {
+        mMediaActionSound .play(SHUTTER_CLICK);
+    }
 
 }
