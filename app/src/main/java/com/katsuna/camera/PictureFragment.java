@@ -784,14 +784,13 @@ public class PictureFragment extends Fragment implements OnBackPressed,
                                                        @NonNull CaptureRequest request,
                                                        @NonNull TotalCaptureResult result) {
                             try {
+                                mMediaHandler.post(playShutterSoundRunnable);
                                 File fileToSave = getFile();
                                 if (fileToSave != null) {
                                     Toast.makeText(getContext(), R.string.picture_taken,
                                             Toast.LENGTH_SHORT).show();
                                     Timber.tag(TAG).d(mFile.toString());
                                 }
-                                mMediaHandler.post(playShutterSoundRunnable);
-
                             } catch (IOException ex) {
                                 handleCameraException(ex, CameraOperation.FILE_ACCESS);
                             }
