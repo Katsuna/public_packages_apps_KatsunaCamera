@@ -54,7 +54,7 @@ public class StorageUtil {
 
     @SuppressLint("SimpleDateFormat")
     private static String getTimestamp() {
-        return new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new SimpleDateFormat("yyyyMMdd_HHmmss.SSS").format(new Date());
     }
 
     // result in MB
