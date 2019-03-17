@@ -59,7 +59,8 @@ public class StorageUtil {
 
     // result in MB
     public static long getAvailableSpace() {
-        StatFs stat = new StatFs(KATSUNA_CAMERA_DIRECTORY.getPath());
+        File dcimFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        StatFs stat = new StatFs(dcimFolder.getPath());
         stat.getFreeBytes();
         long megAvailable = stat.getFreeBytes() / 1048576;
         Timber.d("free space %d", megAvailable);
