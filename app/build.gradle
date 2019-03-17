@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+// Load keystore
+def keystorePropertiesFile = rootProject.file("../../../vendor/keys/keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
@@ -7,13 +12,35 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
+        project.ext.set("archivesBaseName", "Camera-" + defaultConfig.versionName)
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        signingConfigs {
+            katsunaConfig {
+                storeFile rootProject.file("../../../vendor/keys/katsuna.keystore")
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
     }
     buildTypes {
+        debug {
+            testCoverageEnabled = true
+
+            // Disable fabric build ID generation for debug builds
+            ext.enableCrashlytics = false
+        }
+
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles 'proguard-rules.pro'
+            signingConfig signingConfigs.katsunaConfig
+
+            lintOptions {
+                disable 'MissingTranslation'
+            }
         }
     }
 

@@ -1,21 +1,46 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# This is a configuration file for ProGuard.
+# http://proguard.sourceforge.net/index.html#manual/usage.html
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+-keepclassmembers class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator CREATOR;
+}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Optimization is turned off by default. Dex does not like code run
+# through the ProGuard optimize and preverify steps (and performs some
+# of these optimizations on its own).
+-dontoptimize
+-dontpreverify
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# This is needed to allow release builds from android studio.
+-ignorewarnings
+
+-keepclassmembers enum * { *; }
+
+# Keep enough data for stack traces
+-keepnames class **
+-renamesourcefileattribute SourceFile
+-keepattributes Signature,InnerClasses,SourceFile,LineNumberTable,*Annotation*
+
+# Keep the static fields of referenced inner classes of auto-generated R classes, in case we
+# access those fields by reflection (e.g. EmojiMarkup)
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+# Keep all libraries
+-keep class android.support.** { *; }
+-keep class android.arch.** { *; }
+-keep class com.google.** { *; }
+-keep class com.jakewharton.** { *; }
+-keep class org.joda.** { *; }
+-keep interface org.joda.** { *; }
+
+# Hide warnings
+-dontwarn android.support.**
+-dontwarn android.arch.**
+-dontwarn com.google.**
+-dontwarn com.jakewharton.**
+-dontwarn org.joda.**
