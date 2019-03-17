@@ -1,18 +1,29 @@
 package com.katsuna.camera;
 
+import android.hardware.camera2.CameraCharacteristics;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
+
+import com.katsuna.camera.api.CharacteristicUtil;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
@@ -24,6 +35,10 @@ public class PictureCaptureTest {
     @Rule
     public ActivityTestRule<CameraActivity> mActivityRule =
             new ActivityTestRule<>(CameraActivity.class);
+
+    @Rule
+    public GrantPermissionRule mRuntimePermissionRule =
+            GrantPermissionRule.grant(CAMERA, WRITE_EXTERNAL_STORAGE);
 
 
     @Before
@@ -39,10 +54,25 @@ public class PictureCaptureTest {
 
     @Test
     public void clickTakePicture_showsSuccessMessage() {
-        // Click on the add alarm button
+
+        // wait for camera to init properly
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        CameraCharacteristics chars = mActivityRule.getActivity().getActiveCameraCharacteristics();
+
+        // Click on the take picture button
         onView(withId(R.id.take)).perform(click());
 
-        // Check if the add alarm screen is displayed
-        //onView(withId(R.id.minute)).check(matches(isDisplayed()));
+        if (CharacteristicUtil.camera2Supported(chars)) {
+            onView(withText(R.string.picture_taken))
+                    .inRoot(withDecorView(not(mActivityRule.getActivity().getWindow().getDecorView())))
+                    .check(matches(isDisplayed()));
+        } else {
+            onView(withText(R.string.camera_api_not_supported)).check(matches(isDisplayed()));
+        }
     }
 }
