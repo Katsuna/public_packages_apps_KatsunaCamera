@@ -53,7 +53,7 @@ public class PictureCaptureTest {
     }
 
     @Test
-    public void clickTakePicture_showsSuccessMessage() {
+    public void clickTakePicture_showsSuccessMessageOrNotSupportedDevice() {
 
         // wait for camera to init properly
         try {
