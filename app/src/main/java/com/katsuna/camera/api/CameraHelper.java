@@ -5,6 +5,7 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,7 +32,7 @@ public class CameraHelper {
         try {
             output = mCameraManager.getCameraCharacteristics(cameraId);
         } catch (CameraAccessException ex) {
-            Timber.e(ex, "Couldn't getCameraCharacteristics of camera: %s" , cameraId);
+            Timber.e(ex, "Couldn't getCameraCharacteristics of camera: %s", cameraId);
         }
 
         return output;
@@ -41,7 +42,7 @@ public class CameraHelper {
     public void openCamera(@NonNull String cameraId,
                            @NonNull final CameraDevice.StateCallback callback,
                            @Nullable Handler handler)
-        throws CameraAccessException {
+            throws CameraAccessException {
 
         mCameraManager.openCamera(cameraId, callback, handler);
     }
@@ -98,6 +99,15 @@ public class CameraHelper {
         }
 
         return output;
+    }
+
+    public static void cloneBuilder(CaptureRequest.Builder in, CaptureRequest.Builder out) {
+        out.set(CaptureRequest.CONTROL_MODE, in.get(CaptureRequest.CONTROL_MODE));
+        out.set(CaptureRequest.CONTROL_AF_MODE, in.get(CaptureRequest.CONTROL_AF_MODE));
+        out.set(CaptureRequest.COLOR_CORRECTION_MODE, in.get(CaptureRequest.COLOR_CORRECTION_MODE));
+        out.set(CaptureRequest.CONTROL_EFFECT_MODE, in.get(CaptureRequest.CONTROL_EFFECT_MODE));
+        out.set(CaptureRequest.CONTROL_AE_MODE, in.get(CaptureRequest.CONTROL_AE_MODE));
+        out.set(CaptureRequest.FLASH_MODE, in.get(CaptureRequest.FLASH_MODE));
     }
 
 }

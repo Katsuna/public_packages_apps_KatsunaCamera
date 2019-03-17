@@ -672,6 +672,11 @@ public class PictureFragment extends Fragment implements OnBackPressed,
         updatePreview();
     }
 
+    public void reinitCamera() {
+        closeCamera();
+        reopenCamera();
+    }
+
     public void adjustPictureSize() {
         SizeMode sizeMode = mSettingsDatasource.getSizeMode();
 
@@ -770,8 +775,7 @@ public class PictureFragment extends Fragment implements OnBackPressed,
                     mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_ZERO_SHUTTER_LAG);
             captureBuilder.addTarget(mImageReader.getSurface());
 
-            // Use the same AE and AF modes as the preview.
-            enableDefaultModes(captureBuilder);
+            CameraHelper.cloneBuilder(mPreviewRequestBuilder, captureBuilder);
 
             // Orientation
             int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
@@ -833,7 +837,8 @@ public class PictureFragment extends Fragment implements OnBackPressed,
             mPreviewRequestBuilder.set(CONTROL_AE_PRECAPTURE_TRIGGER,
                     CONTROL_AE_PRECAPTURE_TRIGGER_CANCEL);
 
-            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
+            mPreviewRequest = mPreviewRequestBuilder.build();
+            mCaptureSession.capture(mPreviewRequest, mCaptureCallback,
                     mBackgroundHandler);
             // After this, the camera will go back to the normal state of preview.
             mState = CameraState.PREVIEW;

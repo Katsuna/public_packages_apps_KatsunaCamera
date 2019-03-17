@@ -142,7 +142,7 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
         mFlashToggle.setChecked(flashMode == FlashMode.AUTO);
 
         SizeMode sizeMode = mSettingsDataSource.getSizeMode();
-        mSizeToggle.setChecked(sizeMode == SizeMode.LARGE);
+        mSizeToggle.setChecked(sizeMode == SizeMode.SMALL);
 
         BlackAndWhiteMode blackAndWhiteMode = mSettingsDataSource.getBlackAndWhiteMode();
         mBlackWhiteToggle.setChecked(blackAndWhiteMode == BlackAndWhiteMode.ENABLED);
@@ -162,7 +162,7 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
                 .findFragmentById(R.id.container);
 
         if (fragment != null) {
-            fragment.adjustPictureSize();
+            fragment.reinitCamera();
         }
     }
 
