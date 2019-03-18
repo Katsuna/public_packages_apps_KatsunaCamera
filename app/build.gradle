@@ -58,6 +58,7 @@ dependencies {
     implementation "com.android.support:design:$supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
     implementation "com.jakewharton.timber:timber:$timberVersion"
+    implementation 'com.google.firebase:firebase-core:16.0.7'
     testImplementation "junit:junit:$jUnitVersion"
 
     // Android Testing Support Library's runner and rules
@@ -68,3 +69,5 @@ dependencies {
     // UiAutomator Testing
     androidTestImplementation "com.android.support.test.uiautomator:uiautomator-v18:$uiautomatorVersion"
 }
+
+apply plugin: 'com.google.gms.google-services'

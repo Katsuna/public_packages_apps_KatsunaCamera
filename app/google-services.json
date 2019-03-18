@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "551870148749",
+    "firebase_url": "https://katsuna-camera.firebaseio.com",
+    "project_id": "katsuna-camera",
+    "storage_bucket": "katsuna-camera.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551870148749:android:ab5d50d9021721b0",
+        "android_client_info": {
+          "package_name": "com.katsuna.camera"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "551870148749-47a8tp7ldnhu1n8t9qqvg6psjdane6jo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.katsuna.camera",
+            "certificate_hash": "85d0c083f55df7c708cd77950d1156a1b7896c47"
+          }
+        },
+        {
+          "client_id": "551870148749-rh2g2860qnb8bjaea2rbh8mvjuhd4jgk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR8HRw0hpYjNmbaP2PF-exq9CdVuG64Uo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "551870148749-rh2g2860qnb8bjaea2rbh8mvjuhd4jgk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
