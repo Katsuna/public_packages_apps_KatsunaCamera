@@ -13,9 +13,10 @@ import timber.log.Timber;
 
 public class StorageUtil {
 
+    private static final File PICTURES_DIRECTORY =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
     private static final String KATSUNA_CAMERA = "KatsunaCamera";
-    private static final File KATSUNA_CAMERA_DIRECTORY = new File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), KATSUNA_CAMERA);
+    private static final File KATSUNA_CAMERA_DIRECTORY = new File(PICTURES_DIRECTORY, KATSUNA_CAMERA);
 
     private static final long VIDEO_SIZE_THRESHOLD_MB = 200;
     private static final long PICTURE_SIZE_THRESHOLD_MB = 20;
@@ -59,8 +60,7 @@ public class StorageUtil {
 
     // result in MB
     public static long getAvailableSpace() {
-        File dcimFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        StatFs stat = new StatFs(dcimFolder.getPath());
+        StatFs stat = new StatFs(PICTURES_DIRECTORY.getPath());
         stat.getFreeBytes();
         long megAvailable = stat.getFreeBytes() / 1048576;
         Timber.d("free space %d", megAvailable);
@@ -75,5 +75,45 @@ public class StorageUtil {
     public static boolean hasAvailableSpaceToCapturePicture() {
         long freeSpace = getAvailableSpace();
         return (freeSpace > PICTURE_SIZE_THRESHOLD_MB);
+    }
+
+    public static boolean storageReady() {
+        boolean storageWritable = false;
+        boolean directoryExists = false;
+
+        // check storage state
+        StorageState storageState = getExternalStorageState();
+        if (storageState == StorageState.WRITEABLE) {
+            storageWritable = true;
+        } else {
+            Timber.e("External storage not writable.");
+        }
+
+        // check media container folder and create if needed
+        if (KATSUNA_CAMERA_DIRECTORY.exists()) {
+            directoryExists = true;
+        } else {
+            try {
+                tryToCreateDirectory(KATSUNA_CAMERA_DIRECTORY);
+                directoryExists = true;
+            } catch (IOException ex) {
+                Timber.e("Couldn't create KATSUNA_CAMERA_DIRECTORY.");
+            }
+        }
+
+        return storageWritable && directoryExists;
+    }
+
+    private enum StorageState {NOT_AVAILABLE, WRITEABLE, READ_ONLY}
+
+    private static StorageState getExternalStorageState() {
+        StorageState result = StorageState.NOT_AVAILABLE;
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return StorageState.WRITEABLE;
+        } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return StorageState.READ_ONLY;
+        }
+        return result;
     }
 }

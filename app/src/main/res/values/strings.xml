@@ -51,6 +51,7 @@
     <string name="not_available_space_for_video">Not available space to store video.</string>
     <string name="not_available_space_for_picture">Not available space to store picture.</string>
     <string name="recording_stopped_due_storage">Recording stopped due to insufficient space.</string>
+    <string name="external_storage_unavailable">External storage unavailable.</string>
 
     <!-- success messages -->
     <string name="picture_taken">Picture taken</string>

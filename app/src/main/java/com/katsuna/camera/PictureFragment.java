@@ -858,12 +858,17 @@ public class PictureFragment extends Fragment implements OnBackPressed,
         }
 
         if (CharacteristicUtil.camera2Supported(mCameraHost.getActiveCameraCharacteristics())) {
-            // check for space available
-            if (StorageUtil.hasAvailableSpaceToCapturePicture()) {
-                captureEnabled(false);
-                takePicture();
+            if (StorageUtil.storageReady()) {
+                // check for space available
+                if (StorageUtil.hasAvailableSpaceToCapturePicture()) {
+                    captureEnabled(false);
+                    takePicture();
+                } else {
+                    Toast.makeText(getContext(), R.string.not_available_space_for_picture,
+                            Toast.LENGTH_LONG).show();
+                }
             } else {
-                Toast.makeText(getContext(), R.string.not_available_space_for_picture,
+                Toast.makeText(getContext(), R.string.external_storage_unavailable,
                         Toast.LENGTH_LONG).show();
             }
         } else {

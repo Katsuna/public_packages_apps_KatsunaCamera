@@ -387,10 +387,15 @@ public class VideoFragment extends Fragment implements
                 stopRecordingVideo();
             } else {
                 // check for space available
-                if (StorageUtil.hasAvailableSpaceToRecordVideo()) {
-                    startRecordingVideo();
+                if (StorageUtil.storageReady()) {
+                    if (StorageUtil.hasAvailableSpaceToRecordVideo()) {
+                        startRecordingVideo();
+                    } else {
+                        Toast.makeText(getContext(), R.string.not_available_space_for_video,
+                                Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(getContext(), R.string.not_available_space_for_video,
+                    Toast.makeText(getContext(), R.string.external_storage_unavailable,
                             Toast.LENGTH_LONG).show();
                 }
             }
