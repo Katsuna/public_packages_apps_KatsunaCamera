@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KatsunaCamera</string>
+    <string name="app_name">Camera</string>
     <string name="app_not_found">There is no application to handle your request.</string>
 
     <string name="intro_message">
