@@ -1,13 +1,15 @@
 package com.katsuna.camera;
 
+import android.content.Context;
 import android.hardware.camera2.CameraCharacteristics;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.katsuna.camera.api.CharacteristicUtil;
+import com.katsuna.camera.data.FlashMode;
+import com.katsuna.camera.data.source.SettingsPreferenceDataSource;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +17,7 @@ import org.junit.runner.RunWith;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -34,10 +37,6 @@ public class VideoCaptureTest {
     @Rule
     public GrantPermissionRule mRuntimePermissionRule =
             GrantPermissionRule.grant(CAMERA, RECORD_AUDIO, WRITE_EXTERNAL_STORAGE);
-
-    @Before
-    public void start() {
-    }
 
     @Test
     public void clickRecordVideo_showsSuccessMessageOrNotSupportedDevice() {
@@ -71,6 +70,45 @@ public class VideoCaptureTest {
             onView(withText(R.string.camera_api_not_supported)).check(matches(isDisplayed()));
         }
     }
+
+    @Test
+    public void clickRecordVideoWithFlashOn_showsSuccessMessageOrNotSupportedDevice() {
+
+        // set flash on
+        Context context = getInstrumentation().getTargetContext();
+        SettingsPreferenceDataSource prefDatasource = new SettingsPreferenceDataSource(context);
+        prefDatasource.setFlashMode(FlashMode.ON);
+
+        // wait for camera to init properly
+        sleep(1);
+
+        CameraCharacteristics chars = mActivityRule.getActivity().getActiveCameraCharacteristics();
+
+        // switch to video
+        onView(withId(R.id.switch_mode)).perform(click());
+
+        // wait for camera switch to video properly
+        sleep(1);
+
+        // start recording video
+        onView(withId(R.id.take)).perform(click());
+
+        if (CharacteristicUtil.camera2Supported(chars)) {
+            // record for 2
+            sleep(2);
+
+            // stop recording video
+            onView(withId(R.id.take)).perform(click());
+
+            // verify message
+            onView(withText(R.string.video_recorded))
+                    .inRoot(withDecorView(not(mActivityRule.getActivity().getWindow().getDecorView())))
+                    .check(matches(isDisplayed()));
+        } else {
+            onView(withText(R.string.camera_api_not_supported)).check(matches(isDisplayed()));
+        }
+    }
+
 
     private void sleep(int secs) {
         try {

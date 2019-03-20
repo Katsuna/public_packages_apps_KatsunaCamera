@@ -1,5 +1,6 @@
 package com.katsuna.camera;
 
+import android.content.Context;
 import android.hardware.camera2.CameraCharacteristics;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
@@ -8,6 +9,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 
 import com.katsuna.camera.api.CharacteristicUtil;
+import com.katsuna.camera.data.FlashMode;
+import com.katsuna.camera.data.source.SettingsPreferenceDataSource;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,7 +43,6 @@ public class PictureCaptureTest {
     public GrantPermissionRule mRuntimePermissionRule =
             GrantPermissionRule.grant(CAMERA, WRITE_EXTERNAL_STORAGE);
 
-
     @Before
     public void start() {
         // Initialize UiDevice instance
@@ -56,17 +58,103 @@ public class PictureCaptureTest {
     public void clickTakePicture_showsSuccessMessageOrNotSupportedDevice() {
 
         // wait for camera to init properly
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        CameraCharacteristics chars = mActivityRule.getActivity().getActiveCameraCharacteristics();
+        sleep(1);
 
         // Click on the take picture button
         onView(withId(R.id.take)).perform(click());
 
+        checkValidResponses();
+    }
+
+    @Test
+    public void switchCameraAndTakePicture_showsSuccessMessageOrNotSupportedDevice() {
+
+        // wait for camera to init properly
+        sleep(1);
+
+        // switch camera
+        onView(withId(R.id.switch_facing_button)).perform(click());
+
+        // Click on the take picture button
+        onView(withId(R.id.take)).perform(click());
+
+        checkValidResponses();
+    }
+
+    @Test
+    public void toggleBWSettingAndTakePicture_showsSuccessMessageOrNotSupportedDevice() {
+
+        // wait for camera to init properly
+        sleep(1);
+
+        // open settings
+        onView(withId(R.id.settings_button)).perform(click());
+
+        // toggle bw setting
+        onView(withId(R.id.toggle_black_and_white)).perform(click());
+
+        // close settings
+        onView(withId(R.id.close_settings)).perform(click());
+
+        // Click on the take picture button
+        onView(withId(R.id.take)).perform(click());
+
+        checkValidResponses();
+    }
+
+    @Test
+    public void toggleSizeSettingAndTakePicture_showsSuccessMessageOrNotSupportedDevice() {
+
+        // wait for camera to init properly
+        sleep(1);
+
+        // open settings
+        onView(withId(R.id.settings_button)).perform(click());
+
+        // toggle bw setting
+        onView(withId(R.id.toggle_photo_size)).perform(click());
+
+        // close settings
+        onView(withId(R.id.close_settings)).perform(click());
+
+        // Click on the take picture button
+        onView(withId(R.id.take)).perform(click());
+
+        checkValidResponses();
+    }
+
+    @Test
+    public void takePictureWithFlashOn_showsSuccessMessageOrNotSupportedDevice() {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        SettingsPreferenceDataSource prefDatasource = new SettingsPreferenceDataSource(context);
+        prefDatasource.setFlashMode(FlashMode.ON);
+
+        // wait for camera to init properly
+        sleep(1);
+
+        // Click on the take picture button
+        onView(withId(R.id.take)).perform(click());
+
+        checkValidResponses();
+    }
+
+    @Test
+    public void takePictureWithFlashAuto_showsSuccessMessageOrNotSupportedDevice() {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        SettingsPreferenceDataSource prefDatasource = new SettingsPreferenceDataSource(context);
+        prefDatasource.setFlashMode(FlashMode.AUTO);
+
+        // wait for camera to init properly
+        sleep(1);
+
+        // Click on the take picture button
+        onView(withId(R.id.take)).perform(click());
+
+        checkValidResponses();
+    }
+
+    private void checkValidResponses() {
+        CameraCharacteristics chars = mActivityRule.getActivity().getActiveCameraCharacteristics();
         if (CharacteristicUtil.camera2Supported(chars)) {
             onView(withText(R.string.picture_taken))
                     .inRoot(withDecorView(not(mActivityRule.getActivity().getWindow().getDecorView())))
@@ -75,4 +163,13 @@ public class PictureCaptureTest {
             onView(withText(R.string.camera_api_not_supported)).check(matches(isDisplayed()));
         }
     }
+
+    private void sleep(int secs) {
+        try {
+            Thread.sleep(secs * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
