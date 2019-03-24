@@ -20,6 +20,7 @@ import static android.hardware.camera2.CameraMetadata.CONTROL_AF_MODE_CONTINUOUS
 import static android.hardware.camera2.CameraMetadata.CONTROL_AWB_MODE_AUTO;
 import static android.hardware.camera2.CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_3;
 import static android.hardware.camera2.CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_FULL;
+import static android.hardware.camera2.CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
 
 public class CharacteristicUtil {
 
@@ -82,8 +83,9 @@ public class CharacteristicUtil {
 
         Integer supportedLevel = characteristics.get(INFO_SUPPORTED_HARDWARE_LEVEL);
         if (supportedLevel != null) {
-            output = supportedLevel == INFO_SUPPORTED_HARDWARE_LEVEL_FULL
-                || supportedLevel == INFO_SUPPORTED_HARDWARE_LEVEL_3;
+            output = (supportedLevel == INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED
+                || supportedLevel == INFO_SUPPORTED_HARDWARE_LEVEL_FULL
+                || supportedLevel == INFO_SUPPORTED_HARDWARE_LEVEL_3);
         }
         return output;
     }
