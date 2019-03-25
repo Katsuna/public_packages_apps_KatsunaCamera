@@ -171,7 +171,9 @@ public class PictureFragment extends Fragment implements OnBackPressed,
             try {
                 mFile = getFile();
                 Timber.d("file to save: %s", mFile.toString());
-                mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
+                if (!mCaptureEnabled) {
+                    mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
+                }
             } catch (IOException ex) {
                 handleCameraException(ex, CameraOperation.FILE_ACCESS);
             } finally {
@@ -687,7 +689,7 @@ public class PictureFragment extends Fragment implements OnBackPressed,
         int adjustedWidth = mCaptureSize.getWidth() / divider;
         int adjustedHeight = mCaptureSize.getHeight() / divider;
 
-        mImageReader = ImageReader.newInstance(adjustedWidth, adjustedHeight, ImageFormat.JPEG, 2);
+        mImageReader = ImageReader.newInstance(adjustedWidth, adjustedHeight, ImageFormat.JPEG, 1);
         mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
     }
 
@@ -830,6 +832,11 @@ public class PictureFragment extends Fragment implements OnBackPressed,
      * finished.
      */
     private void unlockFocus() {
+        if (mState == CameraState.PREVIEW) {
+            // nothing to do already unlocked
+            return;
+        }
+
         try {
             // Reset the auto-focus trigger
             mPreviewRequestBuilder.set(CONTROL_AF_TRIGGER, CONTROL_AF_TRIGGER_CANCEL);

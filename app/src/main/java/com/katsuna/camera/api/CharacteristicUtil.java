@@ -90,4 +90,13 @@ public class CharacteristicUtil {
         return output;
     }
 
+    public static boolean isLensFacing(@NonNull CameraCharacteristics characteristics) {
+        // Does the camera have a forwards facing lens?
+        Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
+        if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -58,6 +58,8 @@ public class PictureCaptureTest {
         // switch camera
         onView(withId(R.id.switch_facing_button)).perform(click());
 
+        sleep(1);
+
         // Click on the take picture button
         onView(withId(R.id.take)).perform(click());
 
