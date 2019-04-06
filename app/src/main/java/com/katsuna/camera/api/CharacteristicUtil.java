@@ -10,17 +10,22 @@ import android.util.Size;
 import java.util.Arrays;
 import java.util.List;
 
+import timber.log.Timber;
+
 import static android.hardware.camera2.CameraCharacteristics.CONTROL_AE_AVAILABLE_MODES;
 import static android.hardware.camera2.CameraCharacteristics.CONTROL_AF_AVAILABLE_MODES;
 import static android.hardware.camera2.CameraCharacteristics.CONTROL_AWB_AVAILABLE_MODES;
 import static android.hardware.camera2.CameraCharacteristics.FLASH_INFO_AVAILABLE;
 import static android.hardware.camera2.CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL;
+import static android.hardware.camera2.CameraCharacteristics.REQUEST_AVAILABLE_CAPABILITIES;
 import static android.hardware.camera2.CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP;
 import static android.hardware.camera2.CameraMetadata.CONTROL_AF_MODE_CONTINUOUS_PICTURE;
 import static android.hardware.camera2.CameraMetadata.CONTROL_AWB_MODE_AUTO;
 import static android.hardware.camera2.CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_3;
 import static android.hardware.camera2.CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_FULL;
 import static android.hardware.camera2.CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
+import static android.hardware.camera2.CameraMetadata.REQUEST_AVAILABLE_CAPABILITIES_PRIVATE_REPROCESSING;
+import static android.hardware.camera2.CameraMetadata.REQUEST_AVAILABLE_CAPABILITIES_YUV_REPROCESSING;
 
 public class CharacteristicUtil {
 
@@ -84,8 +89,8 @@ public class CharacteristicUtil {
         Integer supportedLevel = characteristics.get(INFO_SUPPORTED_HARDWARE_LEVEL);
         if (supportedLevel != null) {
             output = (supportedLevel == INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED
-                || supportedLevel == INFO_SUPPORTED_HARDWARE_LEVEL_FULL
-                || supportedLevel == INFO_SUPPORTED_HARDWARE_LEVEL_3);
+                    || supportedLevel == INFO_SUPPORTED_HARDWARE_LEVEL_FULL
+                    || supportedLevel == INFO_SUPPORTED_HARDWARE_LEVEL_3);
         }
         return output;
     }
@@ -97,6 +102,20 @@ public class CharacteristicUtil {
             return true;
         }
         return false;
+    }
+
+    public static boolean isZeroShutterLagSupported(@NonNull CameraCharacteristics c) {
+        boolean cond1 = isSupported(c, REQUEST_AVAILABLE_CAPABILITIES,
+                REQUEST_AVAILABLE_CAPABILITIES_PRIVATE_REPROCESSING);
+
+        boolean cond2 = isSupported(c, REQUEST_AVAILABLE_CAPABILITIES,
+                REQUEST_AVAILABLE_CAPABILITIES_YUV_REPROCESSING);
+
+        boolean output = cond1 || cond2;
+
+        Timber.d("isZeroShutterLagSupported: %s", output);
+
+        return output;
     }
 
 }

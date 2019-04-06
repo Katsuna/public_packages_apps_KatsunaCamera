@@ -66,6 +66,8 @@ import java.util.concurrent.TimeUnit;
 
 import timber.log.Timber;
 
+import static android.hardware.camera2.CameraDevice.TEMPLATE_STILL_CAPTURE;
+import static android.hardware.camera2.CameraDevice.TEMPLATE_ZERO_SHUTTER_LAG;
 import static android.hardware.camera2.CameraMetadata.COLOR_CORRECTION_ABERRATION_MODE_HIGH_QUALITY;
 import static android.hardware.camera2.CameraMetadata.CONTROL_AE_PRECAPTURE_TRIGGER_CANCEL;
 import static android.hardware.camera2.CameraMetadata.CONTROL_AE_PRECAPTURE_TRIGGER_START;
@@ -773,8 +775,15 @@ public class PictureFragment extends Fragment implements OnBackPressed,
                 return;
             }
             // This is the CaptureRequest.Builder that we use to take a picture.
-            final CaptureRequest.Builder captureBuilder =
-                    mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_ZERO_SHUTTER_LAG);
+            final CaptureRequest.Builder captureBuilder;
+
+            CameraCharacteristics c = mCameraHost.getActiveCameraCharacteristics();
+            if (CharacteristicUtil.isZeroShutterLagSupported(c)) {
+                captureBuilder = mCameraDevice.createCaptureRequest(TEMPLATE_ZERO_SHUTTER_LAG);
+            } else {
+                captureBuilder = mCameraDevice.createCaptureRequest(TEMPLATE_STILL_CAPTURE);
+            }
+
             captureBuilder.addTarget(mImageReader.getSurface());
 
             CameraHelper.cloneBuilder(mPreviewRequestBuilder, captureBuilder);
