@@ -102,6 +102,9 @@ public class PictureCaptureTest {
         // close settings
         onView(withId(R.id.close_settings)).perform(click());
 
+        // wait for camera to init properly
+        sleep(1);
+
         // Click on the take picture button
         onView(withId(R.id.take)).perform(click());
 
