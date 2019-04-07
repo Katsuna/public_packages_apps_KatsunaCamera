@@ -14,6 +14,7 @@ import timber.log.Timber;
 
 import static android.hardware.camera2.CameraCharacteristics.CONTROL_AE_AVAILABLE_MODES;
 import static android.hardware.camera2.CameraCharacteristics.CONTROL_AF_AVAILABLE_MODES;
+import static android.hardware.camera2.CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS;
 import static android.hardware.camera2.CameraCharacteristics.CONTROL_AWB_AVAILABLE_MODES;
 import static android.hardware.camera2.CameraCharacteristics.FLASH_INFO_AVAILABLE;
 import static android.hardware.camera2.CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL;
@@ -21,6 +22,7 @@ import static android.hardware.camera2.CameraCharacteristics.REQUEST_AVAILABLE_C
 import static android.hardware.camera2.CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP;
 import static android.hardware.camera2.CameraMetadata.CONTROL_AF_MODE_CONTINUOUS_PICTURE;
 import static android.hardware.camera2.CameraMetadata.CONTROL_AWB_MODE_AUTO;
+import static android.hardware.camera2.CameraMetadata.CONTROL_EFFECT_MODE_MONO;
 import static android.hardware.camera2.CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_3;
 import static android.hardware.camera2.CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_FULL;
 import static android.hardware.camera2.CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED;
@@ -114,6 +116,14 @@ public class CharacteristicUtil {
         boolean output = cond1 || cond2;
 
         Timber.d("isZeroShutterLagSupported: %s", output);
+
+        return output;
+    }
+
+    public static boolean isBWColorModeSupported(@NonNull CameraCharacteristics r) {
+        boolean output = isSupported(r, CONTROL_AVAILABLE_EFFECTS, CONTROL_EFFECT_MODE_MONO);
+
+        Timber.d("isBWColorModeSupported: %s", output);
 
         return output;
     }

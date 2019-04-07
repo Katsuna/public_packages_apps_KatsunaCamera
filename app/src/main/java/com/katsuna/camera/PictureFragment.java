@@ -894,7 +894,12 @@ public class PictureFragment extends Fragment implements OnBackPressed,
 
     private void addBlackAndWhiteMode(CaptureRequest.Builder builder, BlackAndWhiteMode bwMode) {
         if (bwMode == BlackAndWhiteMode.ENABLED) {
-            builder.set(CONTROL_EFFECT_MODE, CameraMetadata.CONTROL_EFFECT_MODE_MONO);
+            if (CharacteristicUtil.isBWColorModeSupported(
+                    mCameraHost.getActiveCameraCharacteristics())) {
+                builder.set(CONTROL_EFFECT_MODE, CameraMetadata.CONTROL_EFFECT_MODE_MONO);
+            } else {
+                builder.set(CONTROL_EFFECT_MODE, CameraMetadata.CONTROL_EFFECT_MODE_OFF);
+            }
         } else {
             builder.set(CONTROL_EFFECT_MODE, CameraMetadata.CONTROL_EFFECT_MODE_OFF);
         }
