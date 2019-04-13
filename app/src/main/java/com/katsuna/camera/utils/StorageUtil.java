@@ -14,7 +14,7 @@ import timber.log.Timber;
 public class StorageUtil {
 
     private static final File PICTURES_DIRECTORY =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     private static final String KATSUNA_CAMERA = "KatsunaCamera";
     private static final File KATSUNA_CAMERA_DIRECTORY = new File(PICTURES_DIRECTORY, KATSUNA_CAMERA);
 

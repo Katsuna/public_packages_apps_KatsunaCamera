@@ -174,7 +174,8 @@ public class PictureFragment extends Fragment implements OnBackPressed,
                 mFile = getFile();
                 Timber.d("file to save: %s", mFile.toString());
                 if (!mCaptureEnabled) {
-                    mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
+                    mBackgroundHandler.post(new ImageSaver(getContext(), reader.acquireNextImage(),
+                            mFile));
                 }
             } catch (IOException ex) {
                 handleCameraException(ex, CameraOperation.FILE_ACCESS);

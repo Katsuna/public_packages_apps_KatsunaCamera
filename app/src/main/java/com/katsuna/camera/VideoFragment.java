@@ -15,6 +15,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.MediaActionSound;
 import android.media.MediaRecorder;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -767,6 +768,9 @@ public class VideoFragment extends Fragment implements
 
         Toast.makeText(getContext(), R.string.video_recorded, Toast.LENGTH_SHORT).show();
         Timber.tag(TAG).d("Video saved: %s ", mNextVideoAbsolutePath);
+
+        MediaScannerConnection.scanFile(getContext(), new String[]{mNextVideoAbsolutePath}, null,
+                (path, uri) -> {});
 
         mNextVideoAbsolutePath = null;
         startPreview();
