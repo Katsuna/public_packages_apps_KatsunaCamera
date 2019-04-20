@@ -197,9 +197,8 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
 
     @Override
     public void goToGalleryApp() {
-        Intent intent = new Intent();
-        intent.setAction(android.content.Intent.ACTION_VIEW);
-        intent.setType("image/*");
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setType("vnd.android.cursor.dir/image");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         try {
