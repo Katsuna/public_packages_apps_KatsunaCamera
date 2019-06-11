@@ -9,9 +9,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.0'
+        classpath 'com.android.tools.build:gradle:3.4.1'
         classpath 'com.google.gms:google-services:4.2.0'
-        classpath 'io.fabric.tools:gradle:1.28.0'
+        classpath 'io.fabric.tools:gradle:1.29.0'
     }
 }
 
@@ -32,7 +32,6 @@ task clean(type: Delete) {
 ext {
     // Sdk and tools
     compileSdkVersion = 28
-    buildToolsVersion = '28.0.3'
 
     minSdkVersion = 24
     targetSdkVersion = 28
@@ -48,4 +47,6 @@ ext {
     rulesVersion = '1.0.2'
     runnerVersion = '1.0.2'
     espressoVersion = '3.0.2'
+    firebaseVersion = '16.0.9'
+    crashlyticsVersion = '2.10.1'
 }
