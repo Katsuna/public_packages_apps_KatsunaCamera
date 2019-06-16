@@ -2,6 +2,8 @@ package com.katsuna.camera.utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 
@@ -26,7 +28,30 @@ public class ProfileUtils {
 
         Drawable[] drawables = button.getCompoundDrawablesRelative();
         for (Drawable dr : drawables) {
-            DrawUtils.setColor(dr, takeButtonColor);
+            if (dr instanceof LayerDrawable) {
+                LayerDrawable layerDrawable = (LayerDrawable) dr;
+                Drawable bgDrawable = layerDrawable.findDrawableByLayerId(R.id.capture_bg);
+                DrawUtils.setColor(bgDrawable, takeButtonColor);
+            }
+        }
+    }
+
+    public static void enableRecMode(TextView button, boolean enabled, Context context) {
+        Drawable[] drawables = button.getCompoundDrawablesRelative();
+        for (Drawable dr : drawables) {
+            if (dr instanceof LayerDrawable) {
+                LayerDrawable layerDrawable = (LayerDrawable) dr;
+                GradientDrawable bgDrawable = (GradientDrawable) layerDrawable
+                        .findDrawableByLayerId(R.id.capture_on_bg);
+                int takeButtonColor;
+                if (enabled) {
+                    takeButtonColor = ContextCompat.getColor(context, R.color.common_black);
+                } else {
+                    takeButtonColor = ContextCompat.getColor(context, R.color.common_transparent);
+                }
+
+                DrawUtils.setColor(bgDrawable, takeButtonColor);
+            }
         }
     }
 }

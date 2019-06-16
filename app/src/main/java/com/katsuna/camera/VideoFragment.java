@@ -712,6 +712,7 @@ public class VideoFragment extends Fragment implements
                     Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
                         // UI
                         mButtonVideo.setText(R.string.stop);
+                        ProfileUtils.enableRecMode(mButtonVideo, true, getContext());
                         mIsRecordingVideo = true;
 
                         // Start recording
@@ -762,6 +763,8 @@ public class VideoFragment extends Fragment implements
         // UI
         mIsRecordingVideo = false;
         mButtonVideo.setText(R.string.record_video);
+        ProfileUtils.enableRecMode(mButtonVideo, false, getContext());
+
         // Stop recording
         mMediaRecorder.stop();
         mMediaRecorder.reset();

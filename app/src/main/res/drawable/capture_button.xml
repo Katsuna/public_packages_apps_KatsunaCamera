@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/capture_bg">
+        <shape android:shape="oval">
+            <size
+                android:width="40dp"
+                android:height="40dp" />
+            <solid android:color="@color/common_amberA700" />
+            <size />
+        </shape>
+    </item>
+
+    <item
+        android:id="@+id/capture_on_bg"
+        android:bottom="11dp"
+        android:left="11dp"
+        android:right="11dp"
+        android:top="11dp">
+
+        <shape android:shape="rectangle">
+            <corners android:radius="4dp" />
+            <size
+                android:width="18dp"
+                android:height="18dp" />
+        </shape>
+    </item>
+
+</layer-list>
