@@ -81,14 +81,12 @@
         <activity
             android:name=".InfoActivity"
             android:label="@string/common_app_info"
-            android:parentActivityName=".CameraActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".CameraActivity" />
 
         <activity
             android:name=".SettingsActivity"
             android:label="@string/common_settings"
-            android:parentActivityName=".CameraActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".CameraActivity" />
 
     </application>
 
