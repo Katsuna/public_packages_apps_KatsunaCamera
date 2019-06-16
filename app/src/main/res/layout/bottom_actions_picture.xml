@@ -2,38 +2,43 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_actions_picture_container"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/buttons_container_height"
-    android:background="@color/dark_grey">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/common_black">
 
-    <TextView
-        android:id="@+id/switch_mode"
-        style="@style/CameraActionButton.Portrait"
-        android:drawableTop="@drawable/ic_videocam_white54"
-        android:text="@string/switch_to_video"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/take"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/take"
-        style="@style/CameraActionButton.Portrait"
-        android:drawableTop="@drawable/ic_lens"
-        android:text="@string/take_photo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/gallery_button"
-        app:layout_constraintStart_toEndOf="@id/switch_mode"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/switch_mode"
+            style="@style/CameraActionButton.Portrait"
+            android:drawableTop="@drawable/ic_videocam_white"
+            android:text="@string/switch_to_video"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/take"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/gallery_button"
-        style="@style/CameraActionButton.Portrait"
-        android:drawableTop="@drawable/ic_photo"
-        android:text="@string/gallery"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/take"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/take"
+            style="@style/CameraActionButton.Portrait"
+            android:drawableTop="@drawable/ic_lens"
+            android:text="@string/take_photo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/gallery_button"
+            app:layout_constraintStart_toEndOf="@id/switch_mode" />
+
+        <TextView
+            android:id="@+id/gallery_button"
+            style="@style/CameraActionButton.Portrait"
+            android:drawableTop="@drawable/ic_photo"
+            android:text="@string/gallery"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/take" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

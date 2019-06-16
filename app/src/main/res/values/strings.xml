@@ -18,7 +18,7 @@
     <string name="permission_request">This sample needs permission for camera and audio recording.</string>
 
 
-    <string name="time">Time</string>
+    <string name="time">Video Time:</string>
 
     <!-- action buttons -->
     <string name="take_photo">Take photo</string>

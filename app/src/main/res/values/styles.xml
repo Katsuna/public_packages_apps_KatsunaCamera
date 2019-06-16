@@ -14,19 +14,21 @@
 
     <style name="CameraActionButton">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/common_white</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:lines">1</item>
     </style>
 
     <style name="CameraActionButton.Portrait">
         <item name="android:layout_width">@dimen/action_button_width</item>
+        <item name="android:lines">1</item>
     </style>
 
     <style name="CameraActionButton.Landscape">
         <item name="android:layout_width">@dimen/action_button_width_land</item>
+        <item name="android:lines">2</item>
     </style>
 
     <style name="CameraSettingLabel">
@@ -42,11 +44,12 @@
         <item name="android:ellipsize">end</item>
         <item name="android:lines">1</item>
         <item name="android:textColor">@color/common_white</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">23sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="CameraChronometer.Timer">
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/common_amberA700</item>
     </style>
 
     <style name="KatsunaToggle">

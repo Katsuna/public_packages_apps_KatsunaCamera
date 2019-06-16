@@ -2,9 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_actions_picture_container"
-    android:layout_width="@dimen/buttons_container_width"
-    android:layout_height="match_parent"
-    android:background="@color/dark_grey">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/common_black">
 
     <TextView
         android:id="@+id/gallery_button"
@@ -29,7 +29,7 @@
     <TextView
         android:id="@+id/switch_mode"
         style="@style/CameraActionButton.Landscape"
-        android:drawableTop="@drawable/ic_videocam_white54"
+        android:drawableTop="@drawable/ic_videocam_white"
         android:text="@string/switch_to_video"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

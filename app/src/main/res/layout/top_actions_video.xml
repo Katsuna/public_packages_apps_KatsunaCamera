@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/top_actions_picture_container"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/buttons_container_height"
-    android:background="@color/dark_grey">
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/video_top_container_height"
+    android:background="@color/common_black">
 
     <TextView
         android:id="@+id/flash_button"
@@ -14,24 +15,25 @@
         android:text="@string/flash"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
     <Chronometer
         android:id="@+id/chronometer"
         style="@style/CameraChronometer.Timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/time"
-        style="@style/CameraChronometer.Timer"
+        style="@style/CameraChronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/time"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/chronometer"

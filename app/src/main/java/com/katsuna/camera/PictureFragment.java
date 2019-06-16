@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -125,7 +126,7 @@ public class PictureFragment extends Fragment implements OnBackPressed,
     private final Semaphore mCameraOpenCloseLock = new Semaphore(1);
     private SettingsDataSource mSettingsDatasource;
     private TextView mGalleryButton;
-    private TextView mSwitchFacingButton;
+    private FloatingActionButton mSwitchFacingButton;
     private TextView mSwitchModeButton;
     private ICameraHost mCameraHost;
     private CameraHelper mCameraHelper;
@@ -238,7 +239,7 @@ public class PictureFragment extends Fragment implements OnBackPressed,
         }
 
     };
-    private TextView mSettingsButton;
+    private FloatingActionButton mSettingsButton;
     private TextView mFlashButton;
     private boolean mAutoFocusSupported;
     /**
@@ -925,8 +926,8 @@ public class PictureFragment extends Fragment implements OnBackPressed,
         mSwitchFacingButton = view.findViewById(R.id.switch_facing_button);
         mSwitchFacingButton.setOnClickListener(v -> switchCamera());
 
-        mFlashButton = view.findViewById(R.id.flash_button);
-        mFlashButton.setOnClickListener(v -> switchFlash());
+/*        mFlashButton = view.findViewById(R.id.flash_button);
+        mFlashButton.setOnClickListener(v -> switchFlash());*/
 
         // draw proper icon
         FlashMode flashMode = mSettingsDatasource.getFlashMode();
