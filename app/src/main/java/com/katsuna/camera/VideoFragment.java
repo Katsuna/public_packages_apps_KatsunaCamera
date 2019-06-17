@@ -308,7 +308,16 @@ public class VideoFragment extends Fragment implements
         mGalleryButton.setOnClickListener(v -> mCameraHost.goToGalleryApp());
 
         mSwitchModeButton = view.findViewById(R.id.switch_mode);
-        mSwitchModeButton.setOnClickListener(v -> mCameraHost.switchMode(CameraMode.VIDEO));
+        mSwitchModeButton.setOnClickListener(v -> {
+                    if (!mIsRecordingVideo) {
+                        mCameraHost.switchMode(CameraMode.VIDEO);
+                    } else {
+                        Toast.makeText(getContext(),
+                                R.string.switch_to_photo_failed_video_is_recording,
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
 
         // adjust for video
         mSwitchModeButton.setText(R.string.switch_to_photo);
@@ -773,7 +782,8 @@ public class VideoFragment extends Fragment implements
         Timber.tag(TAG).d("Video saved: %s ", mNextVideoAbsolutePath);
 
         MediaScannerConnection.scanFile(getContext(), new String[]{mNextVideoAbsolutePath}, null,
-                (path, uri) -> {});
+                (path, uri) -> {
+                });
 
         mNextVideoAbsolutePath = null;
         startPreview();
