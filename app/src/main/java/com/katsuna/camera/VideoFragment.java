@@ -2,6 +2,7 @@ package com.katsuna.camera;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
@@ -49,7 +50,10 @@ import com.katsuna.camera.utils.CompareSizesByArea;
 import com.katsuna.camera.utils.DepedencyUtils;
 import com.katsuna.camera.utils.ProfileUtils;
 import com.katsuna.camera.utils.StorageUtil;
+import com.katsuna.commons.entities.ColorProfile;
+import com.katsuna.commons.entities.ColorProfileKeyV2;
 import com.katsuna.commons.entities.UserProfile;
+import com.katsuna.commons.utils.ColorCalcV2;
 
 import java.io.File;
 import java.io.IOException;
@@ -389,6 +393,15 @@ public class VideoFragment extends Fragment implements
     private void applyUserProfile() {
         UserProfile userProfile = mCameraHost.getUserProfile();
         ProfileUtils.adjustCaptureButton(mButtonVideo, userProfile, getContext());
+
+        int pColor1;
+        if (userProfile.colorProfile == ColorProfile.CONTRAST) {
+            pColor1 = Color.WHITE;
+        } else {
+            pColor1 = ColorCalcV2.getColor(getContext(), ColorProfileKeyV2.PRIMARY_COLOR_1,
+                    userProfile.colorProfile);
+        }
+        mChronometer.setTextColor(pColor1);
     }
 
     private void recordButtonOnClick() {

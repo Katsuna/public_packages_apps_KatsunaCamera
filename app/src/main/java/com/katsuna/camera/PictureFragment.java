@@ -3,11 +3,15 @@ package com.katsuna.camera;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
+import android.graphics.drawable.Drawable;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -55,7 +59,11 @@ import com.katsuna.camera.utils.ImageSaver;
 import com.katsuna.camera.utils.ProfileUtils;
 import com.katsuna.camera.utils.SizeUtil;
 import com.katsuna.camera.utils.StorageUtil;
+import com.katsuna.commons.entities.ColorProfile;
+import com.katsuna.commons.entities.ColorProfileKeyV2;
 import com.katsuna.commons.entities.UserProfile;
+import com.katsuna.commons.utils.ColorCalcV2;
+import com.katsuna.commons.utils.DrawUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -403,6 +411,27 @@ public class PictureFragment extends Fragment implements OnBackPressed,
     private void applyUserProfile() {
         UserProfile userProfile = mCameraHost.getUserProfile();
         ProfileUtils.adjustCaptureButton(mTakeButton, userProfile, getContext());
+
+        int pColor2;
+        if (userProfile.colorProfile == ColorProfile.CONTRAST) {
+            pColor2 = Color.WHITE;
+        } else {
+            pColor2 = ColorCalcV2.getColor(getContext(), ColorProfileKeyV2.PRIMARY_COLOR_2,
+                    userProfile.colorProfile);
+        }
+        mSettingsButton.setBackgroundTintList(ColorStateList.valueOf(pColor2));
+        mSwitchFacingButton.setBackgroundTintList(ColorStateList.valueOf(pColor2));
+
+        Drawable settingsButtonDrawable = mSettingsButton.getDrawable();
+        Drawable switchFacingButtonDrawable = mSwitchFacingButton.getDrawable();
+
+        if (userProfile.colorProfile == ColorProfile.CONTRAST) {
+            DrawUtils.setColor(settingsButtonDrawable, Color.BLACK, PorterDuff.Mode.MULTIPLY);
+            DrawUtils.setColor(switchFacingButtonDrawable, Color.BLACK, PorterDuff.Mode.MULTIPLY);
+        } else {
+            DrawUtils.setColor(settingsButtonDrawable, Color.WHITE);
+            DrawUtils.setColor(switchFacingButtonDrawable, Color.WHITE);
+        }
     }
 
     @Override
@@ -1084,7 +1113,7 @@ public class PictureFragment extends Fragment implements OnBackPressed,
     private MediaActionSound mMediaActionSound;
 
     private void playShutterSound() {
-        mMediaActionSound .play(SHUTTER_CLICK);
+        mMediaActionSound.play(SHUTTER_CLICK);
     }
 
 }
