@@ -378,6 +378,26 @@ public class PictureFragment extends Fragment implements OnBackPressed,
         // a camera and start preview from here (otherwise, we wait until the surface is ready in
         // the SurfaceTextureListener).
         reopenCamera();
+        showFabs(true);
+    }
+
+    private void showFabs(boolean enabled) {
+        if (enabled) {
+            final Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                mSettingsButton.show();
+                mSwitchFacingButton.show();
+            }, 500);
+        } else {
+            mSettingsButton.hide();
+            mSwitchFacingButton.hide();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        showFabs(false);
+        super.onStop();
     }
 
     private void applyUserProfile() {
