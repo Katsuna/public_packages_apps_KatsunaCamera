@@ -1,6 +1,8 @@
 package com.katsuna.camera;
 
+import android.app.KeyguardManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
@@ -11,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -27,6 +30,8 @@ import com.katsuna.commons.utils.ProfileReader;
 import com.katsuna.commons.utils.ToggleButtonAdjuster;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
@@ -110,6 +115,12 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
                     setFragment(VideoFragment.newInstance());
                     break;
             }
+        }
+
+        if(isCameraSecure()){
+            Timber.v("Starting in secure camera mode.");
+            // show on lock screen
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         }
     }
 
@@ -284,4 +295,25 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
             super.onBackPressed();
         }
     }
+
+    // https://redmine.replicant.us/attachments/1095/0001-make-Camera-work-on-lock-screen-secure-mode.patch
+    private boolean isKeyguardLocked() {
+        KeyguardManager kgm = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+
+        // isKeyguardSecure excludes the slide lock case.
+        return (kgm != null) && kgm.isKeyguardLocked() && kgm.isKeyguardSecure();
+    }
+
+    private boolean isCameraSecure() {
+        // Check if this is in the secure camera mode.
+        String action = getIntent().getAction();
+        if (Constants.ACTION_STILL_IMAGE_CAMERA_SECURE.equals(action)
+                || Constants.ACTION_IMAGE_CAPTURE_SECURE.equals(action)){
+            return true;
+        }
+        else{
+            return isKeyguardLocked();
+        }
+    }
+
 }
