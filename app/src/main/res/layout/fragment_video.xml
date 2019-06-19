@@ -7,20 +7,19 @@
     <com.katsuna.camera.ui.AutoFitTextureView
         android:id="@+id/texture"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include layout="@layout/top_actions_video" />
-
     <include
         layout="@layout/bottom_actions_picture"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/buttons_container_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/texture" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <include layout="@layout/top_actions_video" />
 
 </android.support.constraint.ConstraintLayout>
