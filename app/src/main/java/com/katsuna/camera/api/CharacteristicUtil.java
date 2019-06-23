@@ -1,6 +1,7 @@
 package com.katsuna.camera.api;
 
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.params.StreamConfigurationMap;
@@ -20,6 +21,7 @@ import static android.hardware.camera2.CameraCharacteristics.FLASH_INFO_AVAILABL
 import static android.hardware.camera2.CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL;
 import static android.hardware.camera2.CameraCharacteristics.REQUEST_AVAILABLE_CAPABILITIES;
 import static android.hardware.camera2.CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP;
+import static android.hardware.camera2.CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE;
 import static android.hardware.camera2.CameraMetadata.CONTROL_AF_MODE_CONTINUOUS_PICTURE;
 import static android.hardware.camera2.CameraMetadata.CONTROL_AWB_MODE_AUTO;
 import static android.hardware.camera2.CameraMetadata.CONTROL_EFFECT_MODE_MONO;
@@ -100,10 +102,7 @@ public class CharacteristicUtil {
     public static boolean isLensFacing(@NonNull CameraCharacteristics characteristics) {
         // Does the camera have a forwards facing lens?
         Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
-        if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
-            return true;
-        }
-        return false;
+        return facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT;
     }
 
     public static boolean isZeroShutterLagSupported(@NonNull CameraCharacteristics c) {
@@ -126,6 +125,15 @@ public class CharacteristicUtil {
         Timber.d("isBWColorModeSupported: %s", output);
 
         return output;
+    }
+
+    public static boolean isMeteringAreaAFSupported(@NonNull CameraCharacteristics r) {
+        Integer maxAfRegions = r.get(CameraCharacteristics.CONTROL_MAX_REGIONS_AF);
+        return maxAfRegions != null && maxAfRegions >= 1;
+    }
+
+    public static Rect getSensorArraySize(@NonNull CameraCharacteristics r) {
+        return r.get(SENSOR_INFO_ACTIVE_ARRAY_SIZE);
     }
 
 }

@@ -10,5 +10,6 @@ public enum CameraOperation {
     CAPTURE_STILL_PICTURE,
     CAPTURE_VIDEO,
     FILE_ACCESS,
-    UNLOCK_FOCUS
+    UNLOCK_FOCUS,
+    MANUAL_FOCUS
 }
