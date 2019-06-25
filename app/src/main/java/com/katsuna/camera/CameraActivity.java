@@ -5,9 +5,13 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.hardware.camera2.CameraCharacteristics;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,6 +27,7 @@ import com.katsuna.camera.data.FlashMode;
 import com.katsuna.camera.data.SizeMode;
 import com.katsuna.camera.data.source.SettingsDataSource;
 import com.katsuna.camera.utils.DepedencyUtils;
+import com.katsuna.camera.utils.StorageUtil;
 import com.katsuna.commons.entities.UserProfile;
 import com.katsuna.commons.entities.UserProfileContainer;
 import com.katsuna.commons.utils.BackgroundGenerator;
@@ -117,7 +122,7 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
             }
         }
 
-        if(isCameraSecure()){
+        if (isCameraSecure()) {
             Timber.v("Starting in secure camera mode.");
             // show on lock screen
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
@@ -207,16 +212,63 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
     }
 
     @Override
-    public void goToGalleryApp() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setType("vnd.android.cursor.dir/image");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    public void goToGalleryApp(CameraMode cameraMode) {
+        String bucketId = "";
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            bucketId = getBucketId();
+        }
+
+        Uri mediaUri;
+        if (cameraMode == CameraMode.PICTURE) {
+            mediaUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        } else {
+            mediaUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        }
+
+        if (bucketId.length() > 0) {
+            mediaUri = mediaUri.buildUpon()
+                    .authority("media")
+                    .appendQueryParameter("bucketId", bucketId)
+                    .build();
+        }
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, mediaUri);
 
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(this, R.string.app_not_found, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // https://stackoverflow.com/a/35397245
+    private String getBucketId() {
+        String bucketId = "";
+
+        final String[] projection = new String[]{"DISTINCT "
+                + MediaStore.Images.Media.BUCKET_DISPLAY_NAME
+                + ", "
+                + MediaStore.Images.Media.BUCKET_ID};
+
+        final Cursor cur = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                projection, null, null, null);
+
+        while (cur != null && cur.moveToNext()) {
+            int nameIndex = cur.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME);
+            String bucketName = cur.getString(nameIndex);
+            if (bucketName.equals(StorageUtil.KATSUNA_CAMERA)) {
+                int buckedIdIndex = cur.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_ID);
+                bucketId = cur.getString(buckedIdIndex);
+                break;
+            }
+        }
+
+        if (cur != null) {
+            cur.close();
+        }
+
+        return bucketId;
     }
 
     @Override
@@ -308,10 +360,9 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
         // Check if this is in the secure camera mode.
         String action = getIntent().getAction();
         if (Constants.ACTION_STILL_IMAGE_CAMERA_SECURE.equals(action)
-                || Constants.ACTION_IMAGE_CAPTURE_SECURE.equals(action)){
+                || Constants.ACTION_IMAGE_CAPTURE_SECURE.equals(action)) {
             return true;
-        }
-        else{
+        } else {
             return isKeyguardLocked();
         }
     }

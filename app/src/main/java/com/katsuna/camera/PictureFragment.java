@@ -1101,7 +1101,7 @@ public class PictureFragment extends Fragment implements OnBackPressed,
         FlashUtil.applyFlashMode(mFlashButton, flashMode);
 
         mGalleryButton = view.findViewById(R.id.gallery_button);
-        mGalleryButton.setOnClickListener(v -> mCameraHost.goToGalleryApp());
+        mGalleryButton.setOnClickListener(v -> mCameraHost.goToGalleryApp(CameraMode.PICTURE));
 
         mSwitchModeButton = view.findViewById(R.id.switch_mode);
         mSwitchModeButton.setOnClickListener(v -> mCameraHost.switchMode(CameraMode.PICTURE));

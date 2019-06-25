@@ -10,7 +10,7 @@ public interface ICameraHost {
 
     CameraMode getActiveCameraMode();
 
-    void goToGalleryApp();
+    void goToGalleryApp(CameraMode mode);
 
     String getActiveCameraId();
 

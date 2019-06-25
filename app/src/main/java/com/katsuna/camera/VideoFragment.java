@@ -309,7 +309,7 @@ public class VideoFragment extends Fragment implements
         mFlashButton.setOnClickListener(v -> switchFlash());
 
         mGalleryButton = view.findViewById(R.id.gallery_button);
-        mGalleryButton.setOnClickListener(v -> mCameraHost.goToGalleryApp());
+        mGalleryButton.setOnClickListener(v -> mCameraHost.goToGalleryApp(CameraMode.VIDEO));
 
         mSwitchModeButton = view.findViewById(R.id.switch_mode);
         mSwitchModeButton.setOnClickListener(v -> {
