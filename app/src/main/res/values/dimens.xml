@@ -5,6 +5,7 @@
     <dimen name="fab_image_size">32dp</dimen>
     <dimen name="video_top_container_height">53dp</dimen>
 
+    <dimen name="preview_margin">100dp</dimen>
     <dimen name="buttons_container_height">90dp</dimen>
     <dimen name="buttons_container_width">90dp</dimen>
     <dimen name="buttons_padding">10dp</dimen>
