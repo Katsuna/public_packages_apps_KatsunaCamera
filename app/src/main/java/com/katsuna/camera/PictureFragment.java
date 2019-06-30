@@ -37,7 +37,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.Size;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -61,6 +60,7 @@ import com.katsuna.camera.ui.AutoFitTextureView;
 import com.katsuna.camera.ui.ConfirmationDialog;
 import com.katsuna.camera.ui.ErrorDialog;
 import com.katsuna.camera.ui.OnBackPressed;
+import com.katsuna.camera.utils.CameraUtil;
 import com.katsuna.camera.utils.CompareSizesByArea;
 import com.katsuna.camera.utils.DepedencyUtils;
 import com.katsuna.camera.utils.FocusUtil;
@@ -112,11 +112,6 @@ import static com.katsuna.camera.Constants.REQUEST_CAMERA_PERMISSION;
 public class PictureFragment extends Fragment implements OnBackPressed,
         ActivityCompat.OnRequestPermissionsResultCallback {
 
-    /**
-     * Conversion from screen rotation to JPEG orientation.
-     */
-    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-
     private static final String FRAGMENT_DIALOG = "dialog";
     /**
      * Tag for the {@link Log}.
@@ -132,13 +127,6 @@ public class PictureFragment extends Fragment implements OnBackPressed,
      * Max preview height that is guaranteed by Camera2 API
      */
     private static final int MAX_PREVIEW_HEIGHT = 1080;
-
-    static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
-    }
 
     /**
      * A {@link Semaphore} to prevent the app from exiting before closing the camera.
@@ -958,8 +946,12 @@ public class PictureFragment extends Fragment implements OnBackPressed,
             CameraHelper.cloneBuilder(mPreviewRequestBuilder, captureBuilder);
 
             // Orientation
-            int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation));
+            int orientationDegrees = mCameraHost.getOrientationManager().getDeviceOrientation()
+                    .getDegrees();
+            int jpegOrientation = CameraUtil.getJpegRotation(orientationDegrees, c);
+
+            Timber.d("CaptureRequest.JPEG_ORIENTATION %d", jpegOrientation);
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, jpegOrientation);
 
             CameraCaptureSession.CaptureCallback captureCallback =
                     new CameraCaptureSession.CaptureCallback() {
@@ -989,20 +981,6 @@ public class PictureFragment extends Fragment implements OnBackPressed,
         } catch (CameraAccessException e) {
             handleCameraException(e, CameraOperation.CAPTURE_STILL_PICTURE);
         }
-    }
-
-    /**
-     * Retrieves the JPEG orientation from the specified screen rotation.
-     *
-     * @param rotation The screen rotation.
-     * @return The JPEG orientation (one of 0, 90, 270, and 360)
-     */
-    private int getOrientation(int rotation) {
-        // Sensor orientation is 90 for most devices, or 270 for some devices (eg. Nexus 5X)
-        // We have to take that into account and rotate JPEG properly.
-        // For devices with orientation of 90, we simply return our mapping from ORIENTATIONS.
-        // For devices with orientation of 270, we need to rotate the JPEG 180 degrees.
-        return (ORIENTATIONS.get(rotation) + mSensorOrientation + 270) % 360;
     }
 
     /**

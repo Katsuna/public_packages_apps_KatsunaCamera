@@ -11,6 +11,9 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +30,8 @@ import com.katsuna.camera.data.FlashMode;
 import com.katsuna.camera.data.SizeMode;
 import com.katsuna.camera.data.source.SettingsDataSource;
 import com.katsuna.camera.utils.DepedencyUtils;
+import com.katsuna.camera.utils.OrientationManager;
+import com.katsuna.camera.utils.OrientationManagerImpl;
 import com.katsuna.camera.utils.StorageUtil;
 import com.katsuna.commons.entities.UserProfile;
 import com.katsuna.commons.entities.UserProfileContainer;
@@ -34,6 +39,7 @@ import com.katsuna.commons.utils.BackgroundGenerator;
 import com.katsuna.commons.utils.ProfileReader;
 import com.katsuna.commons.utils.ToggleButtonAdjuster;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import timber.log.Timber;
@@ -55,6 +61,8 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
     private ToggleButton mBlackWhiteToggle;
     private SettingsDataSource mSettingsDataSource;
     private UserProfile mUserProfile;
+    private Handler mMainHandler;
+    private OrientationManagerImpl mOrientationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +135,9 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
             // show on lock screen
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         }
+
+        mMainHandler = new MainHandler(this, getMainLooper());
+        mOrientationManager = new OrientationManagerImpl(this, mMainHandler);
     }
 
     @Override
@@ -136,9 +147,25 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
 
     @Override
     protected void onResume() {
+        mOrientationManager.resume();
+
         super.onResume();
         refreshProfile();
         applyUserProfile();
+    }
+
+    @Override
+    protected void onPause() {
+        mOrientationManager.pause();
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mOrientationManager = null;
+
+        super.onDestroy();
     }
 
     private void refreshProfile() {
@@ -364,6 +391,40 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
             return true;
         } else {
             return isKeyguardLocked();
+        }
+    }
+
+    @Override
+    public OrientationManager getOrientationManager() {
+        return mOrientationManager;
+    }
+
+    private static class MainHandler extends Handler {
+        final WeakReference<CameraActivity> mActivity;
+
+        MainHandler(CameraActivity activity, Looper looper) {
+            super(looper);
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            CameraActivity activity = mActivity.get();
+            if (activity == null) {
+                return;
+            }
+            //noinspection StatementWithEmptyBody
+            switch (msg.what) {
+
+                // noop yet
+/*                case MSG_CLEAR_SCREEN_ON_FLAG: {
+                    if (!activity.mPaused) {
+                        activity.getWindow().clearFlags(
+                                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    }
+                    break;
+                }*/
+            }
         }
     }
 

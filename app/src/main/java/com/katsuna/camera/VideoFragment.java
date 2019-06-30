@@ -26,7 +26,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Size;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.TextureView;
@@ -45,6 +44,7 @@ import com.katsuna.camera.ui.AutoFitTextureView;
 import com.katsuna.camera.ui.ConfirmationDialog;
 import com.katsuna.camera.ui.ErrorDialog;
 import com.katsuna.camera.ui.OnBackPressed;
+import com.katsuna.camera.utils.CameraUtil;
 import com.katsuna.camera.utils.ChronometerUtils;
 import com.katsuna.camera.utils.CompareSizesByArea;
 import com.katsuna.camera.utils.DepedencyUtils;
@@ -75,28 +75,9 @@ import static com.katsuna.camera.Constants.VIDEO_PERMISSIONS;
 public class VideoFragment extends Fragment implements
         ActivityCompat.OnRequestPermissionsResultCallback, OnBackPressed {
 
-    private static final int SENSOR_ORIENTATION_DEFAULT_DEGREES = 90;
-    private static final int SENSOR_ORIENTATION_INVERSE_DEGREES = 270;
-    private static final SparseIntArray DEFAULT_ORIENTATIONS = new SparseIntArray();
-    private static final SparseIntArray INVERSE_ORIENTATIONS = new SparseIntArray();
-
     private static final String TAG = "VideoFragment";
 
     private static final String FRAGMENT_DIALOG = "dialog";
-
-    static {
-        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_270, 180);
-    }
-
-    static {
-        INVERSE_ORIENTATIONS.append(Surface.ROTATION_0, 270);
-        INVERSE_ORIENTATIONS.append(Surface.ROTATION_90, 180);
-        INVERSE_ORIENTATIONS.append(Surface.ROTATION_180, 90);
-        INVERSE_ORIENTATIONS.append(Surface.ROTATION_270, 0);
-    }
 
     /**
      * A {@link Semaphore} to prevent the app from exiting before closing the camera.
@@ -143,7 +124,6 @@ public class VideoFragment extends Fragment implements
      * A {@link Handler} for running tasks in the background.
      */
     private Handler mBackgroundHandler;
-    private Integer mSensorOrientation;
     private String mNextVideoAbsolutePath;
     private CaptureRequest.Builder mPreviewBuilder;
     /**
@@ -531,7 +511,6 @@ public class VideoFragment extends Fragment implements
             CameraCharacteristics characteristics = mCameraHelper.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics
                     .get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-            mSensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
             if (map == null) {
                 throw new RuntimeException("Cannot get available preview/video sizes");
             }
@@ -681,15 +660,25 @@ public class VideoFragment extends Fragment implements
         mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        switch (mSensorOrientation) {
-            case SENSOR_ORIENTATION_DEFAULT_DEGREES:
-                mMediaRecorder.setOrientationHint(DEFAULT_ORIENTATIONS.get(rotation));
-                break;
-            case SENSOR_ORIENTATION_INVERSE_DEGREES:
-                mMediaRecorder.setOrientationHint(INVERSE_ORIENTATIONS.get(rotation));
-                break;
-        }
+
+        // Orientation
+        CameraCharacteristics characteristics = mCameraHost.getActiveCameraCharacteristics();
+
+        @SuppressWarnings("ConstantConditions")
+        int sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+
+        int deviceOrientation = mCameraHost.getOrientationManager().getDeviceOrientation()
+                .getDegrees();
+
+        boolean isLensFacing = CharacteristicUtil.isLensFacing(characteristics);
+
+        int rotation = CameraUtil.getImageRotation(sensorOrientation, deviceOrientation,
+                isLensFacing);
+
+        Timber.d("mMediaRecorder.setOrientationHint %d", rotation);
+        mMediaRecorder.setOrientationHint(rotation);
+
+
         mMediaRecorder.prepare();
     }
 

@@ -2,6 +2,7 @@ package com.katsuna.camera;
 
 import android.hardware.camera2.CameraCharacteristics;
 
+import com.katsuna.camera.utils.OrientationManager;
 import com.katsuna.commons.entities.UserProfile;
 
 public interface ICameraHost {
@@ -25,4 +26,6 @@ public interface ICameraHost {
     void lockScreenRotation(boolean flag);
 
     UserProfile getUserProfile();
+
+    OrientationManager getOrientationManager();
 }
