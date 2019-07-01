@@ -33,6 +33,7 @@ import com.katsuna.camera.utils.DepedencyUtils;
 import com.katsuna.camera.utils.OrientationManager;
 import com.katsuna.camera.utils.OrientationManagerImpl;
 import com.katsuna.camera.utils.StorageUtil;
+import com.katsuna.commons.entities.ColorProfile;
 import com.katsuna.commons.entities.UserProfile;
 import com.katsuna.commons.entities.UserProfileContainer;
 import com.katsuna.commons.utils.BackgroundGenerator;
@@ -174,7 +175,13 @@ public class CameraActivity extends AppCompatActivity implements ICameraHost {
     }
 
     private void applyUserProfile() {
-        Drawable toggleBg = BackgroundGenerator.createToggleBgV3(this, mUserProfile, false);
+        Drawable toggleBg;
+        if (mUserProfile.colorProfile == ColorProfile.CONTRAST) {
+            toggleBg = BackgroundGenerator.createToggleBgV3(this, mUserProfile, true);
+        } else {
+            toggleBg = BackgroundGenerator.createToggleBgV3(this, mUserProfile, false);
+        }
+
         ToggleButtonAdjuster.adjustToggleButton(this, mFlashToggle, toggleBg, mUserProfile);
         ToggleButtonAdjuster.adjustToggleButton(this, mSizeToggle, toggleBg, mUserProfile);
         ToggleButtonAdjuster.adjustToggleButton(this, mBlackWhiteToggle, toggleBg, mUserProfile);
