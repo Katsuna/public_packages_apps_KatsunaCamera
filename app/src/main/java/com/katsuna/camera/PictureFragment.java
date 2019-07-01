@@ -880,6 +880,7 @@ public class PictureFragment extends Fragment implements OnBackPressed,
         if (mAutoFocusSupported) {
             lockFocus();
         } else {
+            mState = CameraState.TAKEN;
             captureStillPicture();
         }
     }
